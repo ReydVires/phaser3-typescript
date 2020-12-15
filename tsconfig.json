@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"sourceMap": true,
+		"module": "commonjs",
+		"noImplicitAny": true,
+		"esModuleInterop": true,
+		"alwaysStrict": true,
+		"strictNullChecks": true
+	},
+	"exclude": [
+		"node_modules"
+	],
+	"include": [
+		"src/**/*.ts"
+	]
+}

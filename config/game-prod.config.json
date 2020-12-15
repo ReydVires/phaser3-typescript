@@ -1,0 +1,7 @@
+{
+    "MODE": "PRODUCTION",
+    "ENABLE_LOG": false,
+    "ON_DEBUG": false,
+    "BASE_API_URL": "./",
+    "BASE_ASSET_URL": "./"
+}

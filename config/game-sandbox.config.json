@@ -1,0 +1,6 @@
+{
+    "MODE": "SANDBOX",
+    "ENABLE_PHYSICS_DEBUG": true,
+    "BASE_API_URL": "./",
+    "BASE_ASSET_URL": "./"
+}

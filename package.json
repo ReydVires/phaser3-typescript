@@ -1,0 +1,41 @@
+{
+  "name": "phaser-3-webpack-template",
+  "version": "0.8.2",
+  "description": "Experiment using Webpack for Phaser 3",
+  "main": "src/index.js",
+  "author": "ReydVires",
+  "scripts": {
+    "dev": "webpack-dev-server --config webpack/webpack.dev.js --env.build=game-dev --host --open",
+    "sandbox": "webpack-dev-server --config webpack/webpack.dev.js --env.build=game-sandbox --host --open",
+    "build": "webpack --config webpack/webpack.prod.js --env.build=game-prod",
+    "build:dev": "webpack --config webpack/webpack.prod.js --env.build=game-dev",
+    "build:stag": "webpack --config webpack/webpack.prod.js --env.build=game-stag",
+    "dist": "http-server dist -p 5051 -e -o -c120",
+    "clean": "rmdir /Q /S dist",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^6.3.2",
+    "css-loader": "^3.6.0",
+    "eslint": "^7.13.0",
+    "html-webpack-plugin": "^4.5.0",
+    "mini-css-extract-plugin": "^1.3.1",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "style-loader": "^2.0.0",
+    "terser-webpack-plugin": "^4.2.3",
+    "ts-loader": "^7.0.5",
+    "typescript": "^3.9.5",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.4.0",
+    "webpack-obfuscator": "^1.1.0"
+  },
+  "dependencies": {
+    "phaser": "^3.24.1"
+  }
+}
