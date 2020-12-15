@@ -1,9 +1,13 @@
 {
-  "name": "phaser-3-webpack-template",
+  "name": "phaser3-typescript",
   "version": "0.8.2",
-  "description": "Experiment using Webpack for Phaser 3",
+  "description": "Phaser 3 Typescript with Webpack",
   "main": "src/index.js",
   "author": "ReydVires",
+  "repository": {
+    "type": "git",
+    "directory": "https://github.com/ReydVires/phaser3-typescript"
+  },
   "scripts": {
     "dev": "webpack-dev-server --config webpack/webpack.dev.js --env.build=game-dev --host --open",
     "sandbox": "webpack-dev-server --config webpack/webpack.dev.js --env.build=game-sandbox --host --open",

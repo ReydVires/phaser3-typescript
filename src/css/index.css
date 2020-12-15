@@ -3,11 +3,11 @@ body
 	background-color: #181818;
 	margin: 0px 0px;
 	overflow: hidden;
-	touch-action: manipulation;
 }
 
 body #game {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	touch-action: manipulation;
 }

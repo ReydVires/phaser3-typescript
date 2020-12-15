@@ -4,10 +4,8 @@ import '../src/css/index.css';
 import { CONFIG } from './ts/info/GameInfo';
 import { SceneList } from "./ts/info/SceneInfo";
 
+// eslint-disable-next-line no-console
 if (CONFIG.ENABLE_LOG) console.log("[CONFIG]", CONFIG);
-
-const isFirefox = /Firefox/i.test(navigator.userAgent);
-let renderType = isFirefox ? Phaser.WEBGL : Phaser.CANVAS;
 
 type CalculateScreenType = {
 	actualWidth: number,
@@ -53,6 +51,10 @@ meta.content = "initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scala
 document.head.appendChild(meta);
 
 const screenProfile = calculateScreen();
+
+const isFirefox = /Firefox/i.test(navigator.userAgent);
+// Set to WebGL in Firefox, using Canvas in Firefox somehow create performance / lagging issues
+let renderType = isFirefox ? Phaser.WEBGL : Phaser.CANVAS;
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
 	version: CONFIG.VERSION,
