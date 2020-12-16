@@ -25,44 +25,85 @@ export class TitleSceneView implements IBaseView {
 	}
 
 	create (): void {
-		const { centerX, centerY, screenPercentage, ratio, width } = this.screenUtility;
-		const textContent = "The quick brown fox jump";
-		const colorContent = "#fafafa";
-		const fontSizeContent = `${45 * screenPercentage}px`;
-
-		const defaultFont = new Text(this._scene, centerX, centerY, textContent, { fontSize: fontSizeContent, color: colorContent });
-		defaultFont.gameObject.setOrigin(0.5);
-
-		const arialFont = new Text(this._scene, centerX, defaultFont.gameObject.y + defaultFont.gameObject.height, textContent, { fontFamily: FontAsset.arial.key, fontSize: fontSizeContent, color: colorContent });
-		arialFont.gameObject.setOrigin(0.5);
-
-		const customFont = new Text(this._scene, centerX, arialFont.gameObject.y + arialFont.gameObject.height, textContent, { fontFamily: FontAsset.roboto.key, fontSize: fontSizeContent, color: colorContent });
-		customFont.gameObject.setOrigin(0.5);
-
-		const playText = new Text(this._scene, centerX, arialFont.gameObject.y + arialFont.gameObject.height * (5 * ratio), "Lorem Ipsum Dolor Sit Amet", { fontFamily: FontAsset.roboto.key, fontSize: fontSizeContent, color: colorContent });
-		playText.transform.setMinPreferredDisplaySize(width * 0.7, playText.transform.heightAspectRatio);
-		playText.gameObject.setOrigin(0.5);
-
-		const modeText = new Text(this._scene, 16, 16, `MODE: ${CONFIG.MODE}`, { fontFamily: FontAsset.roboto.key, fontSize: `${38 * screenPercentage}px`, color: colorContent });
-		modeText.gameObject.setOrigin(0);
-
-		const versionText = new Text(this._scene, 0, this.screenUtility.height, `${CONFIG.VERSION}`, { fontFamily: FontAsset.roboto.key, fontSize: `${38 * screenPercentage}px`, color: colorContent });
-		versionText.gameObject.setOrigin(0, 1);
-
-		const playBtn = new Button(this._scene, centerX, playText.gameObject.y * 1.15, "PLAY", { color: 'black', fontFamily: FontAsset.roboto.key }, { radius: 15 });
-		playBtn.transform.setToScaleDisplaySize(screenPercentage * 1.8);
-		playBtn.label.gameObject.setFontSize(42 * playBtn.transform.displayToOriginalHeightRatio);
-		playBtn.click.once(() => this.event.emit(EventNames.onClickPlay));
-
-		const muteBtn = new Button(this._scene, centerX, playBtn.gameObject.y * 1.15, "MUTE", { color: 'black', fontFamily: FontAsset.roboto.key }, { radius: 15 });
-		muteBtn.transform.setToScaleDisplaySize(screenPercentage * 1.25);
-		muteBtn.label.gameObject.setFontSize(38 * muteBtn.transform.displayToOriginalHeightRatio);
-		muteBtn.click.on(() => this.event.emit(EventNames.onClickMute));
-
-		this._retrieveLoadAnim = FactoryHelper.CreateLoading(this._scene, centerX, centerY * 0.7, 64 * screenPercentage);
-		this._scene.time.delayedCall(2500, () => this._retrieveLoadAnim.event.destroy());
-
+		this.createPlayButton();
+		this.createMuteButton();
+		this.createLoadingAnimation();
+		this.createDebugText();
 		this.event.emit(EventNames.onCreateFinish);
+	}
+
+	private createPlayButton (): void {
+		const { centerX, centerY, screenPercentage } = this.screenUtility;
+		const label = "PLAY";
+		const fontSize = 56;
+		const style = <Phaser.Types.GameObjects.Text.TextStyle> {
+			fontFamily: FontAsset.roboto.key,
+			color: "black",
+			fontStyle: "bold",
+		};
+		const size = {
+			radius: 32 * screenPercentage,
+			width: 256,
+			height: 128
+		};
+		const button = new Button(this._scene, centerX, centerY * 1.3, label, style, size);
+		button.transform.setToScaleDisplaySize(screenPercentage * 1.25);
+		button.label.gameObject.setFontSize(fontSize * button.transform.displayToOriginalHeightRatio);
+		button.click.once(() => this.event.emit(EventNames.onClickPlay));
+	}
+
+	private createMuteButton (): void {
+		const { centerX, centerY, screenPercentage } = this.screenUtility;
+		const label = "MUTE";
+		const fontSize = 38;
+		const style = <Phaser.Types.GameObjects.Text.TextStyle> {
+			fontFamily: FontAsset.roboto.key,
+			color: 'black',
+		};
+		const button = new Button(this._scene, centerX, centerY * 1.5, label, style, { radius: 15 * screenPercentage });
+		button.transform.setToScaleDisplaySize(screenPercentage * 1.15);
+		button.label.gameObject.setFontSize(fontSize * button.transform.displayToOriginalHeightRatio);
+		button.click.on(() => this.event.emit(EventNames.onClickMute));
+	}
+
+	private createLoadingAnimation (): void {
+		const { centerX, centerY, screenPercentage } = this.screenUtility;
+		const radius = 64 * screenPercentage;
+		const duration = 2500;
+		this._retrieveLoadAnim = FactoryHelper.CreateLoading(this._scene, centerX, centerY, radius);
+		this._scene.time.delayedCall(duration, () => {
+			this.createText();
+			this._retrieveLoadAnim.event.destroy();
+		});
+	}
+
+	private createText (): void {
+		const { centerX, centerY, width, screenPercentage } = this.screenUtility;
+		const content = "A Quick Brown Fox Jumped Over The Lazy Dog's Back 1234567890";
+		const fontSize = 45;
+		const style = <Phaser.Types.GameObjects.Text.TextStyle> {
+			fontFamily: FontAsset.roboto.key,
+			color: "#fafafa",
+			wordWrap: { width: width * 0.95 },
+			align: "center",
+		};
+		const text = new Text(this._scene, centerX, centerY * 0.35, content, style);
+		text.gameObject.setFontSize(fontSize * screenPercentage);
+		text.gameObject.setOrigin(0.5);
+	}
+
+	private createDebugText (): void {
+		const { height, screenPercentage } = this.screenUtility;
+		const content = `v.${CONFIG.VERSION}\nMode: ${CONFIG.MODE}`;
+		const fontSize = 32;
+		const style = <Phaser.Types.GameObjects.Text.TextStyle> {
+			fontFamily: FontAsset.roboto.key,
+			color: "white",
+		};
+		const textPosition = new Phaser.Math.Vector2(16, height - (16 * screenPercentage));
+		const text = new Text(this._scene, textPosition.x, textPosition.y, content, style);
+		text.gameObject.setFontSize(fontSize * screenPercentage);
+		text.gameObject.setOrigin(0, 1);
 	}
 
 	update (time: number, dt: number): void {}

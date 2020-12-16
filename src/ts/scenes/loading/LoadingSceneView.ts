@@ -9,20 +9,28 @@ import { CustomTypes } from "../../../types/custom";
 
 export class LoadingSceneView implements IBaseView {
 
-	event: Phaser.Events.EventEmitter;
-	screenUtility: ScreenUtilController;
 	private _progressText: Text;
 	private _bar: Sprite;
 	private _progressBar: Phaser.GameObjects.Graphics;
+
+	event: Phaser.Events.EventEmitter;
+	screenUtility: ScreenUtilController;
 
 	constructor (private _scene: Phaser.Scene) {
 		this.screenUtility = ScreenUtilController.getInstance();
 	}
 
 	create (): void {
-		const bg = new Sprite(this._scene, this.screenUtility.centerX, this.screenUtility.centerY, Assets.loading_bg.key);
-		bg.transform.setMinPreferredDisplaySize(this.screenUtility.width, this.screenUtility.height);
+		this.createBackground();
+		this.createLoadingComponents();
+	}
 
+	private createBackground (): void {
+		const sprite = new Sprite(this._scene, this.screenUtility.centerX, this.screenUtility.centerY, Assets.loading_bg.key);
+		sprite.transform.setMinPreferredDisplaySize(this.screenUtility.width, this.screenUtility.height);
+	}
+
+	private createLoadingComponents (): void {
 		const frame = new Sprite(this._scene, this.screenUtility.centerX, this.screenUtility.centerY, Assets.loading_frame.key);
 		frame.transform.setToScaleDisplaySize(this.screenUtility.screenPercentage);
 		frame.gameObject.setOrigin(0.5)
