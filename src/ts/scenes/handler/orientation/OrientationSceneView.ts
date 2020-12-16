@@ -38,15 +38,13 @@ export class OrientationSceneView implements IBaseView {
 		this.event.emit(EventNames.onCreateFinish);
 	}
 
-	/** @private */
-	createScreenOverlay (): void {
+	private createScreenOverlay (): void {
 		this._screenOverlay = new Rectangle(this._scene, 0, 0, this.screenUtility.width, this.screenUtility.height, 0x24252a);
 		this._screenOverlay.transform.setMinPreferredDisplaySize(this.screenUtility.width, this.screenUtility.height);
 		this._screenOverlay.gameObject.setInteractive().setOrigin(0);
 	}
 
-	/** @private */
-	createWarningOrientation (): void {
+	private createWarningOrientation (): void {
 		this._warningOrientation = new Image(this._scene, this.screenUtility.centerX, this.screenUtility.centerY, Assets.warning_orientation.key);
 		this._warningOrientation.transform.setMaxPreferredDisplaySize(this.screenUtility.width, this.screenUtility.height);
 	}
