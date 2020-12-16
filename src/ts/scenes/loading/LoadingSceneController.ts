@@ -35,10 +35,7 @@ export class LoadingSceneController extends Phaser.Scene {
 
 	onCompleteLoadBoot (): void {
 		this.view.create();
-		this.load.on('progress', (value: number) => {
-			this.view.updateLoading(value);
-		});
-
+		this.load.on('progress', (value: number) => this.view.updateLoading(value));
 		this.loadResources();
 	}
 
