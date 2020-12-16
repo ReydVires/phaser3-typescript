@@ -2,12 +2,21 @@ body
 {
 	background-color: #181818;
 	margin: 0px 0px;
-	overflow: hidden;
+	overflow: hidden; /* disable scroll functionality */
 }
 
-body #game {
+body #wrapper {
 	display: flex;
-	align-items: center;
 	justify-content: center;
+}
+
+#game {
+	align-items: center;
 	touch-action: manipulation;
+}
+
+a, button
+{
+  -ms-touch-action: manipulation; /* IE10  */
+  touch-action: manipulation; /* IE11+ */
 }
