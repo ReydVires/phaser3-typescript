@@ -40,6 +40,6 @@
     "webpack-obfuscator": "^1.1.0"
   },
   "dependencies": {
-    "phaser": "^3.24.1"
+    "phaser": "^3.50.0"
   }
 }
