@@ -37,7 +37,7 @@ export class LoaderHelper {
 		return Promise.all(fonts.map((v) => LoaderHelper.LoadFont(v.key, v.url as string)));
 	}
 
-	static LoadFont (key: string, url: string | null): Promise<any> {
+	static LoadFont (key: string, url: string | null): Promise<void> {
 		return new Promise((resolve, reject) => {
 			if (!url) return resolve();
 			const path = CONFIG.BASE_ASSET_URL + url;
@@ -48,7 +48,7 @@ export class LoaderHelper {
 
 			document.fonts.load('10pt "' + key + '"')
 				.then(() => resolve())
-				.catch(() => reject(Error('load font error :' + path)));
+				.catch(() => reject(Error('Load font error: ' + path)));
 		});
 	}
 
@@ -74,6 +74,7 @@ export class LoaderHelper {
 				scene.load.audio(assetInfo.key, CONFIG.BASE_ASSET_URL + assetInfo.url);
 			}
 			else {
+				// eslint-disable-next-line no-console
 				console.warn("Asset type is undefined:", assetInfo);
 			}
 		}
