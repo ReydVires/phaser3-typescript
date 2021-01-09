@@ -53,8 +53,9 @@ document.head.appendChild(meta);
 const screenProfile = calculateScreen();
 
 const isFirefox = /Firefox/i.test(navigator.userAgent);
+
 // Set to WebGL in Firefox, using Canvas in Firefox somehow create performance / lagging issues
-let renderType = isFirefox ? Phaser.WEBGL : Phaser.CANVAS;
+const renderType = isFirefox ? Phaser.WEBGL : Phaser.CANVAS;
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
 	version: CONFIG.VERSION,
@@ -87,7 +88,7 @@ const game = new Phaser.Game(gameConfig);
 
 // Register resize event
 let execResize: NodeJS.Timeout;
-const resizeEndEvent = new Event('resizeEnd');
+const resizeEndEvent = new Event("resizeEnd");
 const execDelay = 380;
 window.addEventListener("resize", () => {
 	clearTimeout(execResize);
