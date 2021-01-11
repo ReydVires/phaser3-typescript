@@ -15,7 +15,7 @@ export class ScreenUtilController {
 		return ScreenUtilController.instance;
 	}
 
-	init (scene: Phaser.Scene, defaultWidth = 1080, defaultHeight = 1920): Promise<any> {
+	init (scene: Phaser.Scene, defaultWidth = 1080, defaultHeight = 1920): Promise<void> {
 		return new Promise((resolve) => {
 			this._scene = scene;
 			this.setDefaultScreenSize(defaultWidth, defaultHeight);
