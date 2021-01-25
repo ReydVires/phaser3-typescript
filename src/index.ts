@@ -86,17 +86,22 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
 
 const game = new Phaser.Game(gameConfig);
 
-// Register resize event
-let execResize: NodeJS.Timeout;
-const resizeEndEvent = new Event("resizeEnd");
-const execDelay = 380;
-window.addEventListener("resize", () => {
-	clearTimeout(execResize);
-	execResize = setTimeout(() => window.document.dispatchEvent(resizeEndEvent), execDelay);
-}, false);
+// Resize is better to be registered after loaded
+window.addEventListener("load", () => {
 
-window.document.addEventListener("resizeEnd", (e) => {
-	const screenProfile = calculateScreen();
-	game.scale.resize(screenProfile.actualWidth, screenProfile.actualHeight);
-	game.scale.setZoom(screenProfile.actualZoom);
+	// Register resize event
+	let execResize: NodeJS.Timeout;
+	const resizeEndEvent = new Event("resizeEnd");
+	const EXEC_DELAY = 380;
+	window.addEventListener("resize", () => {
+		clearTimeout(execResize);
+		execResize = setTimeout(() => window.document.dispatchEvent(resizeEndEvent), EXEC_DELAY);
+	}, false);
+	
+	window.document.addEventListener("resizeEnd", (e) => {
+		const screenProfile = calculateScreen();
+		game.scale.resize(screenProfile.actualWidth, screenProfile.actualHeight);
+		game.scale.setZoom(screenProfile.actualZoom);
+	});
+
 });
