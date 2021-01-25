@@ -2,9 +2,9 @@ import { ScreenUtilController } from "../../modules/screenutility/ScreenUtilCont
 import { IBaseView } from "../../modules/core/IBaseView";
 import { Text } from "../../modules/gameobjects/Text";
 import { CONFIG } from "../../info/GameInfo";
-import { GraphicsButton as Button } from "../../modules/gameobjects/ui/GraphicsButton";
 import { FactoryHelper } from "../../helper/FactoryHelper";
 import { FontAsset } from "../../library/AssetFont";
+import { Button } from "../../modules/gameobjects/Button";
 
 export const enum EventNames {
 	onCreateFinish = "onCreateFinish",
@@ -42,14 +42,15 @@ export class TitleSceneView implements IBaseView {
 			fontStyle: "bold",
 		};
 		const size = {
-			radius: 32 * screenPercentage,
+			radius: 28 * screenPercentage,
 			width: 256,
 			height: 128
 		};
+
 		const button = new Button(this._scene, centerX, centerY * 1.3, label, style, size);
 		button.transform.setToScaleDisplaySize(screenPercentage * 1.25);
-		button.label.gameObject.setFontSize(fontSize * button.transform.displayToOriginalHeightRatio);
-		button.click.once(() => this.event.emit(EventNames.onClickPlay));
+		button.gameObject.label.setFontSize(fontSize * button.transform.displayToOriginalHeightRatio);
+		button.gameObject.click.once(() => this.event.emit(EventNames.onClickPlay));
 	}
 
 	private createMuteButton (): void {
@@ -57,13 +58,17 @@ export class TitleSceneView implements IBaseView {
 		const label = "MUTE";
 		const fontSize = 38;
 		const style = <Phaser.Types.GameObjects.Text.TextStyle> {
-			fontFamily: FontAsset.roboto.key,
-			color: 'black',
+			fontFamily: FontAsset.arial.key,
 		};
-		const button = new Button(this._scene, centerX, centerY * 1.5, label, style, { radius: 15 * screenPercentage });
+		const size = {
+			radius: 15 * screenPercentage,
+			width:  228,
+		};
+
+		const button = new Button(this._scene, centerX, centerY * 1.5, label, style, size);
 		button.transform.setToScaleDisplaySize(screenPercentage * 1.15);
-		button.label.gameObject.setFontSize(fontSize * button.transform.displayToOriginalHeightRatio);
-		button.click.on(() => this.event.emit(EventNames.onClickMute));
+		button.gameObject.label.setFontSize(fontSize * button.transform.displayToOriginalHeightRatio);
+		button.gameObject.click.on(() => this.event.emit(EventNames.onClickMute));
 	}
 
 	private createLoadingAnimation (): void {

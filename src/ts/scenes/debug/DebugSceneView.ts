@@ -1,10 +1,10 @@
 import { IBaseView } from "../../modules/core/IBaseView";
 import { Rectangle } from "../../modules/gameobjects/Rectangle";
-import { GraphicsButton } from "../../modules/gameobjects/ui/GraphicsButton";
 import { Text } from "../../modules/gameobjects/Text";
 import { ScreenUtilController } from "../../modules/screenutility/ScreenUtilController";
 import { DebugDraggableContainer } from "./dragable/DebugDraggableContainer";
 import { FontAsset } from "../../library/AssetFont";
+import { Button } from "../../modules/gameobjects/Button";
 
 export const enum EventNames {
 	onCreateFinish = "onCreateFinish",
@@ -15,6 +15,7 @@ export class DebugSceneView implements IBaseView {
 	event: Phaser.Events.EventEmitter;
 	screenUtility: ScreenUtilController;
 
+	private _bg: Rectangle;
 	private _headerLabelText: Text;
 	private _debugText: Text;
 	private _container: Phaser.GameObjects.Container;
@@ -34,8 +35,8 @@ export class DebugSceneView implements IBaseView {
 		this._toggleKey = this._scene.input.keyboard.addKey("F2");
 		this._container = this._scene.add.container(0, 0);
 
-		const bg = new Rectangle(this._scene, 0, 0, this.screenUtility.width, this.screenUtility.height, 0x2e3131);
-		bg.gameObject.setOrigin(0, 0).setAlpha(0.85).setInteractive();
+		this._bg = new Rectangle(this._scene, 0, 0, this.screenUtility.width, this.screenUtility.height, 0x2e3131);
+		this._bg.gameObject.setOrigin(0, 0).setAlpha(0.85).setInteractive();
 
 		const debugTemplateTextContent = "[DEBUG LOG: F2]";
 		this._headerLabelText = new Text(this._scene, this.screenUtility.width * 0.025, this.screenUtility.height * 0.015, debugTemplateTextContent, {
@@ -59,7 +60,7 @@ export class DebugSceneView implements IBaseView {
 		};
 		const buttonSize = {
 			height: this._headerLabelText.gameObject.displayHeight,
-			width: 128 * this.screenUtility.screenPercentage,
+			width: 138 * this.screenUtility.screenPercentage,
 			radius: 10 * this.screenUtility.screenPercentage
 		};
 		const toggleBtn = this.createToggleButton(buttonSize, buttonDebugStyle);
@@ -68,14 +69,14 @@ export class DebugSceneView implements IBaseView {
 		const draggableContent = [
 			this._debugText.gameObject,
 		];
-		this._draggableContainer = new DebugDraggableContainer(this._scene, 0, this._headerLabelText.gameObject.getBottomLeft().y, this.screenUtility.width - toggleBtn.sprite.displayWidth, this.screenUtility.height - this._headerLabelText.transform.displayHeight);
+		this._draggableContainer = new DebugDraggableContainer(this._scene, 0, this._headerLabelText.gameObject.getBottomLeft().y, this.screenUtility.width - toggleBtn.gameObject.sprite.displayWidth, this.screenUtility.height - this._headerLabelText.transform.displayHeight);
 		this._draggableContainer.add(draggableContent).resetContentPosition();
 
 		this._container.add([
-			bg.gameObject,
+			this._bg.gameObject,
 			this._headerLabelText.gameObject,
-			toggleBtn.gameObject,
-			clearBtn.gameObject,
+			toggleBtn.gameObject.container,
+			clearBtn.gameObject.container,
 		]);
 
 		this._debugPanelGameObjects = [
@@ -105,19 +106,39 @@ export class DebugSceneView implements IBaseView {
 		return graphicsMask;
 	}
 
-	createToggleButton (size: object, style: Phaser.GameObjects.TextStyle): GraphicsButton {
-		const button = new GraphicsButton(this._scene, this.screenUtility.width * 0.9925, this._headerLabelText.gameObject.getTopCenter().y, "Toggle", style, size);
-		button.setOrigin(1, 0, true);
-		button.click.on(() => {
+	createToggleButton (size: object, style: Phaser.GameObjects.TextStyle): Button {
+		const button = new Button(this._scene, 0, 0, "Toggle", style, size);
+
+		const marginRight = 1.15 * this._bg.transform.displayToOriginalWidthRatio;
+		const marginTop = 1.25 * this._bg.transform.displayToOriginalHeightRatio;
+		const position = this._bg.gameObject.getTopRight().clone().add(
+			new Phaser.Math.Vector2(
+				-button.transform.displayWidth/2 * marginRight,
+				button.transform.displayHeight/2 * marginTop
+			)
+		);
+		button.gameObject.container.setPosition(position.x, position.y);
+
+		button.gameObject.click.on(() => {
 			(this._isShowDebugPanel) ? this.hideDebugPanel() : this.showDebugPanel();
 		});
 		return button;
 	}
 
-	createClearButton (size: object, style: Phaser.GameObjects.TextStyle): GraphicsButton {
-		const button = new GraphicsButton(this._scene, this.screenUtility.width * 0.9925, this.screenUtility.height * 0.995, "Clear", style, size);
-		button.setOrigin(1, 1, true);
-		button.click.on(() => this.clearDebugText());
+	createClearButton (size: object, style: Phaser.GameObjects.TextStyle): Button {
+		const button = new Button(this._scene, 0, 0, "Clear", style, size);
+
+		const marginRight = 1.15 * this._bg.transform.displayToOriginalWidthRatio;
+		const marginBottom = 1.25 * this._bg.transform.displayToOriginalHeightRatio;
+		const position = this._bg.gameObject.getBottomRight().clone().add(
+			new Phaser.Math.Vector2(
+				-button.transform.displayWidth/2 * marginRight,
+				-button.transform.displayHeight/2 * marginBottom,
+			)
+		);
+		button.gameObject.container.setPosition(position.x, position.y);
+
+		button.gameObject.click.on(() => this.clearDebugText());
 		return button;
 	}
 

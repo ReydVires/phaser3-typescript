@@ -1,9 +1,9 @@
 import { IBaseView } from "../../modules/core/IBaseView";
 import { ScreenUtilController } from "../../modules/screenutility/ScreenUtilController";
 import { Assets } from "../../library/AssetGameplay";
-import { GraphicsButton } from "../../modules/gameobjects/ui/GraphicsButton";
 import { Image } from "../../modules/gameobjects/Image";
 import { FontAsset } from "../../library/AssetFont";
+import { Button } from "../../modules/gameobjects/Button";
 
 export const enum EventNames {
 	onPlaySFXClick = "onPlaySFXClick",
@@ -54,23 +54,26 @@ export class GameplaySceneView implements IBaseView {
 		const fontSize = 28;
 		const style = <Phaser.Types.GameObjects.Text.TextStyle> {
 			fontFamily: FontAsset.roboto.key,
-			color: "black",
 		};
 		const size = {
-			radius: 15 * screenPercentage,
+			radius: 12 * screenPercentage,
 			height: 50
 		};
 		const position = new Phaser.Math.Vector2(16, 16).multiply(new Phaser.Math.Vector2(screenPercentage));
-		const button = new GraphicsButton(this._scene, position.x, position.y, label, style, size);
+
+		const button = new Button(this._scene, position.x, position.y, label, style, size);
 		button.transform.setToScaleDisplaySize(screenPercentage * 1.45);
-		button.label.gameObject.setFontSize(fontSize * button.transform.displayToOriginalHeightRatio);
-		button.setOrigin(0, 0, true);
-		button.click.once(() => {
+
+		const {x, y} = button.gameObject.sprite.getBottomRight();
+		button.gameObject.container.setPosition(position.x + x, position.y + y);
+
+		button.gameObject.label.setFontSize(fontSize * button.transform.displayToOriginalHeightRatio);
+		button.gameObject.click.once(() => {
 			this.event.emit(EventNames.onPlaySFXClick);
 			this.event.emit(EventNames.onClickRestart);
 		});
 
-		this._uiView.add(button.gameObject);
+		this._uiView.add(button.gameObject.container);
 	}
 
 	update (time: number, dt: number): void {

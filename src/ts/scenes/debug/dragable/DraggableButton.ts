@@ -1,4 +1,4 @@
-import { Transform } from "../../../modules/gameobjects/Transform";
+import { Transform } from "../../../modules/gameobjects/components/Transform";
 
 type OnClick = (gameObject: Phaser.GameObjects.Sprite) => void;
 
