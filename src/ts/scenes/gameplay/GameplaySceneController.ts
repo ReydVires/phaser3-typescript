@@ -5,6 +5,7 @@ import { EventNames, GameplaySceneView } from "./GameplaySceneView";
 import { CameraController } from "./camera/CameraController";
 import { DebugController } from "./debug/DebugController";
 import { SceneInfo } from "../../info/SceneInfo";
+import { ErrorSceneController } from "../handler/error/ErrorSceneController";
 
 type OnCreateFinish = (...args: unknown[]) => void;
 type OnClickLogo = (counter: number) => void;
@@ -44,6 +45,16 @@ export class GameplaySceneController extends Phaser.Scene {
 			this.cameraController.registerGameobjectInCamera(uiView as Phaser.GameObjects.Container, CameraKeyList.UI);
 			this.debugController.show();
 			window.document.addEventListener("resizeEnd", resizeEndListener);
+
+			// Test Error
+			const errorPanel = this.scene.get(SceneInfo.ERROR.key) as ErrorSceneController;
+			const retryErrorEvent = errorPanel.showErrorPanel(true, "Test error message!", () => {
+				if (!window.navigator.onLine) {
+					this.time.delayedCall(1500, retryErrorEvent); // Note: Call this for looping show panel
+					return;
+				}
+				location.reload();
+			});
 		});
 	}
 

@@ -56,6 +56,7 @@ export class LoadingSceneController extends Phaser.Scene {
 	onCompleteLoad (): void {
 		this.load.removeAllListeners();
 		this.scene.start(SceneInfo.TITLE.key);
+		this.scene.launch(SceneInfo.ERROR.key);
 		if (CONFIG.ON_DEBUG) this.scene.launch(SceneInfo.DEBUG.key);
 		this.scene.launch(SceneInfo.ORIENTATION.key);
 	}
