@@ -4,6 +4,7 @@ import { LoadingSceneController } from "../scenes/loading/LoadingSceneController
 import { OrientationSceneController } from "../scenes/handler/orientation/OrientationSceneController";
 import { TitleSceneController } from "../scenes/title/TitleSceneController";
 import { GameplaySceneController } from "../scenes/gameplay/GameplaySceneController";
+import { ErrorSceneController } from "../scenes/handler/error/ErrorSceneController";
 
 export const SceneInfo = {
 	BOOT: {
@@ -13,6 +14,10 @@ export const SceneInfo = {
 	DEBUG: {
 		key: "DebugScene",
 		scene: DebugSceneController
+	},
+	ERROR: {
+		key: "ErrorScene",
+		scene: ErrorSceneController
 	},
 	LOADING: {
 		key: "LoadingScene",
