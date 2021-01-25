@@ -1,9 +1,9 @@
 # Phaser 3 Typescript Template
 
-<img src='https://img.shields.io/badge/Version-0.8.2-brightgreen'  alt="Version: 0.8.2"/>
+<img src='https://img.shields.io/badge/Version-0.8.5-brightgreen'  alt="Version: 0.8.5"/>
 <img src='https://img.shields.io/badge/Status-Maintained-brightgreen'  alt="Status: Maintained"/>
 <img src='https://img.shields.io/badge/Contribution-Open-brightgreen'  alt="Contribution: Open"/>
-<img src='https://img.shields.io/badge/Phaser-3.50.0-blue'  alt="Phaser: 3.50.0"/>
+<img src='https://img.shields.io/badge/Phaser-3.52.0-blue'  alt="Phaser: 3.52.0"/>
 
 ## Quickstart
 
