@@ -2,6 +2,7 @@ import { LoadingSceneView } from "./LoadingSceneView";
 import { LoaderHelper } from "../../helper/LoaderHelper";
 import { Assets as LoadingAsset } from "../../library/AssetLoading";
 import { Assets as OrientationAsset } from "../../library/AssetOrientation";
+import { Assets as ErrorAsset } from "../../library/AssetError";
 import { Assets as GameplayAsset } from "../../library/AssetGameplay";
 import { Assets as TitleAsset } from "../../library/AssetTitle";
 import { Audios as AudioAsset } from "../../library/AssetAudio";
@@ -44,6 +45,7 @@ export class LoadingSceneController extends Phaser.Scene {
 
 		// LOAD ALL GAME FILE HERE!
 		LoaderHelper.LoadAssets(this, OrientationAsset as CustomTypes.Asset.ObjectAsset);
+		LoaderHelper.LoadAssets(this, ErrorAsset as CustomTypes.Asset.ObjectAsset);
 		LoaderHelper.LoadAssets(this, GameplayAsset as CustomTypes.Asset.ObjectAsset);
 		LoaderHelper.LoadAssets(this, AudioAsset as CustomTypes.Asset.ObjectAsset);
 		LoaderHelper.LoadAssets(this, TitleAsset as CustomTypes.Asset.ObjectAsset);
