@@ -39,7 +39,10 @@ export class GameplaySceneController extends Phaser.Scene {
 			this.scene.start(SceneInfo.TITLE.key);
 		});
 		this.onClickLogo((counter) => {
-			this.debugController.log(counter + ") User agent:\n" + window.navigator.userAgent);
+			this.debugController.log(counter + ") User agent:\n"
+				+ window.navigator.userAgent
+				+ "\nPixelRatio: " + window.devicePixelRatio
+			);
 		});
 		this.onCreateFinish((uiView) => {
 			this.cameraController.registerGameobjectInCamera(uiView as Phaser.GameObjects.Container, CameraKeyList.UI);
@@ -49,11 +52,10 @@ export class GameplaySceneController extends Phaser.Scene {
 			// Test Error
 			const errorPanel = this.scene.get(SceneInfo.ERROR.key) as ErrorSceneController;
 			const retryErrorEvent = errorPanel.showErrorPanel(true, "Test error message!", () => {
-				if (!window.navigator.onLine) {
-					this.time.delayedCall(1500, retryErrorEvent); // Note: Call this for looping show panel
+				if (window.navigator.onLine) {
 					return;
 				}
-				location.reload();
+				this.time.delayedCall(1500, retryErrorEvent); // Note: Call this for looping show panel
 			});
 		});
 	}

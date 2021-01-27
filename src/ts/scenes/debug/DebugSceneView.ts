@@ -69,7 +69,7 @@ export class DebugSceneView implements IBaseView {
 		const draggableContent = [
 			this._debugText.gameObject,
 		];
-		this._draggableContainer = new DebugDraggableContainer(this._scene, 0, this._headerLabelText.gameObject.getBottomLeft().y, this.screenUtility.width - toggleBtn.gameObject.sprite.displayWidth, this.screenUtility.height - this._headerLabelText.transform.displayHeight);
+		this._draggableContainer = new DebugDraggableContainer(this._scene, 0, this._headerLabelText.gameObject.getBottomLeft().y, this.screenUtility.width - toggleBtn.transform.displayWidth, this.screenUtility.height - this._headerLabelText.transform.displayHeight);
 		this._draggableContainer.add(draggableContent).resetContentPosition();
 
 		this._container.add([
