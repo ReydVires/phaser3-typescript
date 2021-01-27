@@ -14,7 +14,7 @@ export class DraggableButton {
 
 	constructor (private _scene: Phaser.Scene, x: number, y: number, texture: string, frame = 0) {
 		this._gameObject = _scene.add.sprite(x, y, texture, frame).setData(Props.typeOf, DraggableButton);
-		this._transform = new Transform(this._gameObject);
+		this._transform = new Transform(_scene, this._gameObject);
 	}
 
 	onClick (callback: OnClick): void {

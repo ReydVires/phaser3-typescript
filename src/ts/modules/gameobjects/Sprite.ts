@@ -7,7 +7,7 @@ export class Sprite {
 
 	constructor (private _scene: Phaser.Scene, x: number, y: number, texture: string, frame = 0) {
 		this._gameObject = _scene.add.sprite(x, y, texture, frame);
-		this._transform = new Transform(this._gameObject);
+		this._transform = new Transform(_scene, this._gameObject);
 	}
 
 	get gameObject (): Phaser.GameObjects.Sprite { return this._gameObject; }
