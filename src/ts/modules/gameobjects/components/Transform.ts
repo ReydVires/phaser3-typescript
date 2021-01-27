@@ -5,9 +5,9 @@ export class Transform {
 	private _gameObject: GameObject;
 	private _cameraRef: Phaser.Cameras.Scene2D.Camera;
 
-	constructor (gameObject: GameObject) {
+	constructor (scene: Phaser.Scene, gameObject: GameObject) {
 		this._gameObject = gameObject;
-		this._cameraRef = this._gameObject.scene.cameras.main;
+		this._cameraRef = scene.cameras.main;
 	}
 
 	get position (): Phaser.Math.Vector2 { return new Phaser.Math.Vector2(this._gameObject.x, this._gameObject.y); }
