@@ -1,5 +1,4 @@
-body
-{
+body {
 	background-color: #181818;
 	margin: 0px 0px;
 	overflow: hidden; /* disable scroll functionality */
@@ -15,8 +14,7 @@ body #wrapper {
 	touch-action: manipulation;
 }
 
-a, button
-{
+a, button {
   -ms-touch-action: manipulation; /* IE10  */
   touch-action: manipulation; /* IE11+ */
 }
