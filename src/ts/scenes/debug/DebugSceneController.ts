@@ -26,7 +26,10 @@ export class DebugSceneController extends Phaser.Scene {
 	}
 
 	update (time: number, dt: number): void {
-		this.view.update(time, dt);
+		if (!this.scene.isVisible()) return;
+		if (Phaser.Input.Keyboard.JustDown(this.view.toggleKey)) {
+			(this.view.isShowDebugPanel) ? this.view.hideDebugPanel() : this.view.showDebugPanel();
+		}
 	}
 
 	clearDebugText (): void {
