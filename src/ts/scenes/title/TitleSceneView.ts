@@ -2,9 +2,9 @@ import { ScreenUtilController } from "../../modules/screenutility/ScreenUtilCont
 import { IBaseView } from "../../modules/core/IBaseView";
 import { Text } from "../../modules/gameobjects/Text";
 import { CONFIG } from "../../info/GameInfo";
+import { Button } from "../../modules/gameobjects/Button";
 import { FactoryHelper } from "../../helper/FactoryHelper";
 import { FontAsset } from "../../library/AssetFont";
-import { Button } from "../../modules/gameobjects/Button";
 
 export const enum EventNames {
 	onCreateFinish = "onCreateFinish",
@@ -18,6 +18,7 @@ export class TitleSceneView implements IBaseView {
 	screenUtility: ScreenUtilController;
 
 	private _retrieveLoadAnim: FactoryHelper.GameObjectsLoading;
+	private _debugText: Text;
 
 	constructor (private _scene: Phaser.Scene) {
 		this.screenUtility = ScreenUtilController.getInstance();
@@ -28,6 +29,7 @@ export class TitleSceneView implements IBaseView {
 		this.createPlayButton();
 		this.createMuteButton();
 		this.createLoadingAnimation();
+		this.createText();
 		this.createDebugText();
 		this.event.emit(EventNames.onCreateFinish);
 	}
@@ -77,7 +79,7 @@ export class TitleSceneView implements IBaseView {
 		const duration = 2500;
 		this._retrieveLoadAnim = FactoryHelper.CreateLoading(this._scene, centerX, centerY, radius);
 		this._scene.time.delayedCall(duration, () => {
-			this.createText();
+			this._debugText.gameObject.setVisible(true);
 			this._retrieveLoadAnim.event.destroy();
 		});
 	}
@@ -92,9 +94,9 @@ export class TitleSceneView implements IBaseView {
 			wordWrap: { width: width * 0.95 },
 			align: "center",
 		};
-		const text = new Text(this._scene, centerX, centerY * 0.35, content, style);
-		text.gameObject.setFontSize(fontSize * screenPercentage);
-		text.gameObject.setOrigin(0.5);
+		this._debugText = new Text(this._scene, centerX, centerY * 0.35, content, style);
+		this._debugText.gameObject.setFontSize(fontSize * screenPercentage);
+		this._debugText.gameObject.setOrigin(0.5).setVisible(false);
 	}
 
 	private createDebugText (): void {
@@ -110,7 +112,5 @@ export class TitleSceneView implements IBaseView {
 		text.gameObject.setFontSize(fontSize * screenPercentage);
 		text.gameObject.setOrigin(0, 1);
 	}
-
-	update (time: number, dt: number): void {}
 
 }

@@ -42,9 +42,7 @@ export class TitleSceneController extends Phaser.Scene {
 		});
 	}
 
-	update (time: number, dt: number): void {
-		this.view.update(time, dt);
-	}
+	update (time: number, dt: number): void {}
 
 	onClickPlay (events: Function): void {
 		this.view.event.on(EventNames.onClickPlay, events);
