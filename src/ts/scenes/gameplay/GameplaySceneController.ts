@@ -39,23 +39,20 @@ export class GameplaySceneController extends Phaser.Scene {
 			this.scene.start(SceneInfo.TITLE.key);
 		});
 		this.onClickLogo((counter) => {
-			this.debugController.log(counter + ") User agent:\n"
-				+ window.navigator.userAgent
-				+ "\nPixelRatio: " + window.devicePixelRatio
-			);
+			this.debugController.log(`${counter}) User agent:\n${window.navigator.userAgent}\ndevicePixelRatio: ${window.devicePixelRatio}`);
 		});
 		this.onCreateFinish((uiView) => {
 			this.cameraController.registerGameobjectInCamera(uiView as Phaser.GameObjects.Container, CameraKeyList.UI);
 			this.debugController.show();
-			window.document.addEventListener("resizeEnd", resizeEndListener);
+			window.document.addEventListener("resizeEnd", resizeEndListener); // Note: Dispatch to debug when resized
 
 			// Test Error
 			const errorPanel = this.scene.get(SceneInfo.ERROR.key) as ErrorSceneController;
 			const retryErrorEvent = errorPanel.showErrorPanel(true, "Test error message!", () => {
-				if (window.navigator.onLine) {
+				if (!window.navigator.onLine) {
+					this.time.delayedCall(1500, retryErrorEvent); // Note: Call this for looping show panel
 					return;
 				}
-				this.time.delayedCall(1500, retryErrorEvent); // Note: Call this for looping show panel
 			});
 		});
 	}
@@ -65,7 +62,9 @@ export class GameplaySceneController extends Phaser.Scene {
 	}
 
 	update (time: number, dt: number): void {
-		this.view.update(time, dt);
+		if (this.view.restartKey.isDown) {
+			this.view.event.emit(EventNames.onClickRestart);
+		}
 		this.cameraController.update(time, dt);
 	}
 
