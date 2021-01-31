@@ -97,11 +97,11 @@ window.addEventListener("load", () => {
 		clearTimeout(execResize);
 		execResize = setTimeout(() => window.document.dispatchEvent(resizeEndEvent), EXEC_DELAY);
 	}, false);
-	
+
 	window.document.addEventListener("resizeEnd", (e) => {
-		const screenProfile = calculateScreen();
-		game.scale.resize(screenProfile.actualWidth, screenProfile.actualHeight);
-		game.scale.setZoom(screenProfile.actualZoom);
+		const { actualWidth, actualHeight, actualZoom } = calculateScreen();
+		game.scale.resize(actualWidth, actualHeight);
+		game.scale.setZoom(actualZoom);
 	});
 
 });
