@@ -3,6 +3,7 @@
 import '../src/css/index.css';
 import { CONFIG } from './ts/info/GameInfo';
 import { SceneList } from "./ts/info/SceneInfo";
+import { TestPlugin } from './ts/modules/test/TestPlugin';
 
 // eslint-disable-next-line no-console
 if (CONFIG.ENABLE_LOG) console.log("[CONFIG]", CONFIG);
@@ -72,6 +73,11 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
 	},
 	seed: [((+new Date()).toString(16) + (Math.random() * 100000000 | 0).toString(16))],
 	scene: SceneList(),
+	plugins: {
+		global: [
+			{ key: "TestPlugin", plugin: TestPlugin, mapping: "testPlugin" }
+		]
+	},
 	input: { activePointers: 3 },
 	dom: {
 		createContainer: true

@@ -24,6 +24,8 @@ export class TitleSceneController extends Phaser.Scene {
 		});
 		this.onCreateFinish(() => {
 			this.playBGMWhenReady();
+
+			this.testPlugin.createMethod();
 		});
 	}
 
