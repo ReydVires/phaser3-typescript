@@ -39,7 +39,7 @@ export class OrientationSceneView implements IBaseView {
 	}
 
 	private createScreenOverlay (): void {
-		this._screenOverlay = new Rectangle(this._scene, 0, 0, this.screenUtility.width, this.screenUtility.height, 0x24252a);
+		this._screenOverlay = new Rectangle(this._scene, 0, 0, this.screenUtility.width, this.screenUtility.height, 0x181818);
 		this._screenOverlay.transform.setMinPreferredDisplaySize(this.screenUtility.width, this.screenUtility.height);
 		this._screenOverlay.gameObject.setInteractive().setOrigin(0);
 	}
