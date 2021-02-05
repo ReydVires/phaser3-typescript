@@ -1,5 +1,5 @@
 import { ScreenUtilController } from "../../modules/screenutility/ScreenUtilController";
-import { IBaseView } from "../../modules/core/IBaseView";
+import { BaseView } from "../../modules/core/BaseView";
 import { Text } from "../../modules/gameobjects/Text";
 import { CONFIG } from "../../info/GameInfo";
 import { Button } from "../../modules/gameobjects/Button";
@@ -12,7 +12,7 @@ export const enum EventNames {
 	onClickMute = "onClickMute",
 };
 
-export class TitleSceneView implements IBaseView {
+export class TitleSceneView implements BaseView {
 
 	event: Phaser.Events.EventEmitter;
 	screenUtility: ScreenUtilController;

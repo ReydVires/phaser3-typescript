@@ -1,4 +1,4 @@
-import { IBaseView } from "../../modules/core/IBaseView";
+import { BaseView } from "../../modules/core/BaseView";
 import { ScreenUtilController } from "../../modules/screenutility/ScreenUtilController";
 import { Text } from "../../modules/gameobjects/Text";
 import { Assets } from "../../library/AssetLoading";
@@ -7,7 +7,7 @@ import { Animations } from "../../library/AssetAnimation";
 import { Sprite } from "../../modules/gameobjects/Sprite";
 import { CustomTypes } from "../../../types/custom";
 
-export class LoadingSceneView implements IBaseView {
+export class LoadingSceneView implements BaseView {
 
 	private _progressText: Text;
 	private _bar: Sprite;

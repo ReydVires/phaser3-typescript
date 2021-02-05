@@ -1,6 +1,6 @@
 import { Assets } from "../../../library/AssetError";
 import { FontAsset } from "../../../library/AssetFont";
-import { IBaseView } from "../../../modules/core/IBaseView";
+import { BaseView } from "../../../modules/core/BaseView";
 import { Image } from "../../../modules/gameobjects/Image";
 import { Sprite } from "../../../modules/gameobjects/Sprite";
 import { Text } from "../../../modules/gameobjects/Text";
@@ -10,7 +10,7 @@ export const enum EventNames {
 	onClickRetry = "onClickRetry",
 };
 
-export class ErrorSceneView implements IBaseView {
+export class ErrorSceneView implements BaseView {
 
 	event: Phaser.Events.EventEmitter;
 	screenUtility: ScreenUtilController;

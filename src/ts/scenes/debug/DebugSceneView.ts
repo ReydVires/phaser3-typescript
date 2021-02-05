@@ -1,5 +1,5 @@
 import { FontAsset } from "../../library/AssetFont";
-import { IBaseView } from "../../modules/core/IBaseView";
+import { BaseView } from "../../modules/core/BaseView";
 import { Button } from "../../modules/gameobjects/Button";
 import { Rectangle } from "../../modules/gameobjects/Rectangle";
 import { Text } from "../../modules/gameobjects/Text";
@@ -14,7 +14,7 @@ export const enum DataProps {
 	isShowDebugPanel = "isShowDebugPanel",
 }
 
-export class DebugSceneView implements IBaseView {
+export class DebugSceneView implements BaseView {
 
 	event: Phaser.Events.EventEmitter;
 	screenUtility: ScreenUtilController;
