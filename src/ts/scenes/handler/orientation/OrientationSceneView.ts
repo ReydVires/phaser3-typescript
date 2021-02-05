@@ -1,5 +1,5 @@
 import { Assets } from "../../../library/AssetOrientation";
-import { IBaseView } from "../../../modules/core/IBaseView";
+import { BaseView } from "../../../modules/core/BaseView";
 import { Image } from "../../../modules/gameobjects/Image";
 import { Rectangle } from "../../../modules/gameobjects/Rectangle";
 import { ScreenUtilController } from "../../../modules/screenutility/ScreenUtilController";
@@ -16,7 +16,7 @@ export const enum DataProperty {
 	initOnLandscape = "OrientationSceneView#initOnLandscape"
 };
 
-export class OrientationSceneView implements IBaseView {
+export class OrientationSceneView implements BaseView {
 
 	event: Phaser.Events.EventEmitter;
 	screenUtility: ScreenUtilController;
