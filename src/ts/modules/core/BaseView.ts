@@ -1,6 +1,6 @@
 import { ScreenUtilController } from "../screenutility/ScreenUtilController";
 
-export interface IBaseView {
+export interface BaseView {
 
 	event: Phaser.Events.EventEmitter;
 	screenUtility: ScreenUtilController;
