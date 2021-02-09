@@ -1,11 +1,13 @@
-export class TestPlugin extends Phaser.Plugins.BasePlugin {
+import { injectExtension } from "./ToastExtension";
+
+export class ToastPlugin extends Phaser.Plugins.BasePlugin {
 
 	constructor (pluginManager: Phaser.Plugins.PluginManager) {
 		super(pluginManager);
 	}
 
 	init (): void {
-		console.log("TestPlugin is live!");
+		injectExtension();
 	}
 
 	/**

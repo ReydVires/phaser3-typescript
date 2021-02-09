@@ -3,7 +3,7 @@
 import '../src/css/index.css';
 import { CONFIG } from './ts/info/GameInfo';
 import { SceneList } from "./ts/info/SceneInfo";
-import { TestPlugin } from './ts/modules/test/TestPlugin';
+import { ToastPlugin } from './ts/modules/test/ToastPlugin';
 
 // eslint-disable-next-line no-console
 if (CONFIG.ENABLE_LOG) console.log("[CONFIG]", CONFIG);
@@ -75,7 +75,7 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
 	scene: SceneList(),
 	plugins: {
 		global: [
-			{ key: "TestPlugin", plugin: TestPlugin, mapping: "testPlugin" }
+			{ key: "ToastPlugin", plugin: ToastPlugin, mapping: "toast" }
 		]
 	},
 	input: { activePointers: 3 },
