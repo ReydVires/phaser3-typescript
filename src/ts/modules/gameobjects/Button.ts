@@ -6,7 +6,7 @@ export class Button {
 	private _gameObject: GraphicsButton;
 	private _transform: Transform;
 
-	constructor (private _scene: Phaser.Scene, x: number, y: number, label: string, style?: Phaser.Types.GameObjects.Text.TextStyle, textureInfo?: TextureInfo) {
+	constructor (private _scene: Phaser.Scene, x: number, y: number, label: string, style?: Phaser.Types.GameObjects.Text.TextStyle, textureInfo?: Partial<TextureInfo>) {
 		this._gameObject = new GraphicsButton(_scene, x, y, label, style, textureInfo);
 		this._transform = new Transform(_scene, this._gameObject.sprite);
 	}

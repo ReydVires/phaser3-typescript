@@ -27,10 +27,10 @@ type ActionEvent = {
 };
 
 export type TextureInfo = {
-	width?: number,
-	height?: number,
-	color?: number,
-	radius?: number,
+	width: number,
+	height: number,
+	color: number,
+	radius: number,
 }
 
 export class GraphicsButton {
@@ -41,7 +41,7 @@ export class GraphicsButton {
 	private _textureKey: string;
 	private _actionEvent: ActionEvent;
 
-	constructor (private _scene: Phaser.Scene, x: number, y: number, label: string, style?: Phaser.Types.GameObjects.Text.TextStyle, textureInfo?: TextureInfo) {
+	constructor (private _scene: Phaser.Scene, x: number, y: number, label: string, style?: Phaser.Types.GameObjects.Text.TextStyle, textureInfo?: Partial<TextureInfo>) {
 		this.generateTexture(textureInfo)
 			.createSprite()
 			.createTextLabel(label, style)
@@ -62,7 +62,7 @@ export class GraphicsButton {
 		return this._sprite;
 	}
 
-	get label ():Phaser.GameObjects.Text {
+	get label (): Phaser.GameObjects.Text {
 		return this._label;
 	}
 
@@ -70,7 +70,7 @@ export class GraphicsButton {
 		return (+new Date * Math.random()).toString(36).substring(2, 7).toUpperCase();
 	}
 
-	private generateTexture (textureInfo?: TextureInfo): this {
+	private generateTexture (textureInfo?: Partial<TextureInfo>): this {
 		const textureInfoLocal = <TextureInfo> {
 			width: textureInfo?.width || BASE_WIDTH,
 			height: textureInfo?.height || BASE_HEIGHT,
