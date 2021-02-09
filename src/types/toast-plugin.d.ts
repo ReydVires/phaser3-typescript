@@ -27,6 +27,7 @@ declare global {
 			type Config = {
 				showDuration: number,
 				manualClose: boolean
+				textStyle: Phaser.Types.GameObjects.Text.TextStyle
 			}
 
 			type TextureInfo = {
