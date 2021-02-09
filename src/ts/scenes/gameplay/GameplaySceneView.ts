@@ -30,6 +30,8 @@ export class GameplaySceneView implements BaseView {
 	}
 
 	create (): void {
+		this._scene.toast.configure(this._scene);
+
 		this._uiView = this._scene.add.container();
 		this._restartKey = this._scene.input.keyboard.addKey('R');
 		this.createTestImage();
@@ -81,6 +83,10 @@ export class GameplaySceneView implements BaseView {
 		});
 
 		this._uiView.add(button.gameObject.container);
+	}
+
+	showToast (message: string, position?: Phaser.Toast.Position, config?: Partial<Phaser.Toast.Config>): void {
+		this._scene.toast.show(message, position, config);
 	}
 
 }

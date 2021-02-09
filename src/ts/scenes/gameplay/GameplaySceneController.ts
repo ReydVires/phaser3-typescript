@@ -40,6 +40,7 @@ export class GameplaySceneController extends Phaser.Scene {
 		});
 		this.onClickLogo((counter) => {
 			this.debugController.log(`${counter}) User agent:\n${window.navigator.userAgent}\ndevicePixelRatio: ${window.devicePixelRatio}`);
+			this.view.showToast("New debug log printed", Phaser.Toast.Position.MIDDLE_CENTER);
 		});
 		this.onCreateFinish((uiView) => {
 			this.cameraController.registerGameobjectInCamera(uiView as Phaser.GameObjects.Container, CameraKeyList.UI);
