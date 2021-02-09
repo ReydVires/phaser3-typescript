@@ -20,12 +20,17 @@ export class TitleSceneController extends Phaser.Scene {
 
 		this.onClickPlay(() => this.scene.start(SceneInfo.GAMEPLAY.key));
 		this.onClickMute(() => {
+			/**
+			 * Toast.show(this, "Message", Position.TOP_RIGHT, {});
+			 */
+			this.view.showToast(`BGM is ${this.audioController.isMuted() ? "off" : "on"}`, Phaser.Toast.Position.TOP_CENTER);
+
 			(this.audioController.isMuted()) ? this.audioController.mute() : this.audioController.unmute();
 		});
 		this.onCreateFinish(() => {
 			this.playBGMWhenReady();
 
-			this.testPlugin.createMethod();
+			this.toast.createMethod();
 		});
 	}
 

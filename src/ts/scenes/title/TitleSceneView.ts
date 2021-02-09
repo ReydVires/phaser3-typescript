@@ -5,6 +5,7 @@ import { CONFIG } from "../../info/GameInfo";
 import { Button } from "../../modules/gameobjects/Button";
 import { FactoryHelper } from "../../helper/FactoryHelper";
 import { FontAsset } from "../../library/AssetFont";
+import { Toast } from "../../modules/test/Toast";
 
 export const enum EventNames {
 	onCreateFinish = "onCreateFinish",
@@ -19,6 +20,7 @@ export class TitleSceneView implements BaseView {
 
 	private _retrieveLoadAnim: FactoryHelper.GameObjectsLoading;
 	private _debugText: Text;
+	private _toast: Toast;
 
 	constructor (private _scene: Phaser.Scene) {
 		this.screenUtility = ScreenUtilController.getInstance();
@@ -26,6 +28,8 @@ export class TitleSceneView implements BaseView {
 	}
 
 	create (): void {
+		this._toast = new Toast(this._scene, { color: 0xecf0f1 });
+
 		this.createPlayButton();
 		this.createMuteButton();
 		this.createLoadingAnimation();
@@ -111,6 +115,10 @@ export class TitleSceneView implements BaseView {
 		const text = new Text(this._scene, textPosition.x, textPosition.y, content, style);
 		text.gameObject.setFontSize(fontSize * screenPercentage);
 		text.gameObject.setOrigin(0, 1);
+	}
+
+	showToast (message: string, position?: Phaser.Toast.Position, config?: Partial<Phaser.Toast.Config>): void {
+		this._toast.show(message, position, config);
 	}
 
 }
