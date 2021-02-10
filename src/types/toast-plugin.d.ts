@@ -24,10 +24,18 @@ declare global {
 				BOTTOM_RIGHT,
 			}
 
+			type GameObjectTarget = Phaser.GameObjects.Container
+
+			type TweenProps = {
+				[key: string]: Phaser.Types.Tweens.TweenPropConfig
+			}
+
 			type Config = {
 				showDuration: number,
 				manualClose: boolean
-				textStyle: Phaser.Types.GameObjects.Text.TextStyle
+				textStyle: Phaser.Types.GameObjects.Text.TextStyle,
+				fadeInTweenEffect: TweenProps,
+				fadeOutTweenEffect: TweenProps,
 			}
 
 			type TextureInfo = {
