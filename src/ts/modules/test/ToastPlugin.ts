@@ -11,13 +11,18 @@ const BASE_STYLE_FONT_FAMILY = "arial";
 const BASE_STYLE_FONT_ALIGN = "center";
 const BASE_DEPTH = 100;
 
-type GameObjectTarget = Phaser.GameObjects.Container;
+const enum DataProps {
+	isManualClose = "isManualClose",
+	showDuration = "showDuration",
+	fadeInPropsEffect = "fadeInPropsEffect",
+	fadeOutPropsEffect = "fadeOutPropsEffect",
+}
 
 export class ToastPlugin extends Phaser.Plugins.BasePlugin {
 
 	private _scene: Phaser.Scene;
 	private _textureKey: string;
-	private _containers: GameObjectTarget[];
+	private _containers: Phaser.Toast.GameObjectTarget[];
 
 	constructor (pluginManager: Phaser.Plugins.PluginManager) {
 		super(pluginManager);
@@ -69,19 +74,21 @@ export class ToastPlugin extends Phaser.Plugins.BasePlugin {
 		return text;
 	}
 
-	private setupContainer (size: Phaser.GameObjects.Components.Size, children: Phaser.GameObjects.GameObject[], manualClose?: boolean): GameObjectTarget {
+	private setupContainer (size: Phaser.GameObjects.Components.Size, children: Phaser.GameObjects.GameObject[]): Phaser.Toast.GameObjectTarget {
 		const container = this._scene.add.container(0, 0, children);
 		container.setSize(size.displayWidth, size.displayHeight).setDepth(BASE_DEPTH);
 		container.setVisible(false).setActive(false);
+		return container;
+	}
 
-		if (!manualClose) return container;
-		return container.setInteractive({useHandCursor: true}).on("pointerup", () => {
-			container.disableInteractive();
-			this.fadeOut(container);
+	private setInteractive (target: Phaser.Toast.GameObjectTarget): void {
+		target.setInteractive({useHandCursor: true}).on("pointerup", () => {
+			target.disableInteractive();
+			this.fadeOut(target);
 		});
 	}
 
-	private setPosition (target: GameObjectTarget, position?: Phaser.Toast.Position): void {
+	private setPosition (target: Phaser.Toast.GameObjectTarget, position?: Phaser.Toast.Position): void {
 		const { width: screenWidth, height: screenHeight } = this._scene.cameras.main;
 		const { displayWidth: targetWidth, displayHeight: targetHeight } = target;
 
@@ -133,35 +140,47 @@ export class ToastPlugin extends Phaser.Plugins.BasePlugin {
 		}
 	}
 
-	private fadeIn (target: GameObjectTarget, showDuration?: number, isManualClose?: boolean): void {
+	private fadeIn (target: Phaser.Toast.GameObjectTarget): void {
+		const onStartHandler: Phaser.Types.Tweens.TweenOnStartCallback = (): void => {
+			target.setVisible(true).setActive(true);
+		};
+
+		const onCompleteHandler: Phaser.Types.Tweens.TweenOnCompleteCallback = (): void => {
+			if (target.getData(DataProps.isManualClose)) return;
+			this.fadeOut(target);
+		};
+
+		const tweenProps = <Phaser.Toast.TweenProps> {
+			alpha: { getStart: () => 0, getEnd: () => 1 },
+			...target.getData(DataProps.fadeInPropsEffect)
+		};
+
 		const tweenEffect = this._scene.tweens.create({
-			onStart: () => {
-				target.setVisible(true).setActive(true);
-			},
+			onStart: onStartHandler,
 			targets: target,
-			props: {
-				alpha: { getStart: () => 0, getEnd: () => 1 },
-			},
+			props: tweenProps,
 			duration: 100,
-			completeDelay: showDuration ?? 600,
-			onComplete: () => {
-				if (isManualClose) return;
-				this.fadeOut(target);
-			}
+			completeDelay: target.getData(DataProps.showDuration) ?? 600,
+			onComplete: onCompleteHandler
 		});
 		tweenEffect.play();
 	}
 
-	private fadeOut (target: GameObjectTarget): void {
+	private fadeOut (target: Phaser.Toast.GameObjectTarget): void {
+		const onCompleteHandler: Phaser.Types.Tweens.TweenOnCompleteCallback = (): void => {
+			target.setVisible(false).setActive(false);
+		};
+
+		const tweenProps = <Phaser.Toast.TweenProps> {
+			alpha: { getStart: () => 1, getEnd: () => 0 },
+			...target.getData(DataProps.fadeOutPropsEffect)
+		};
+
 		const tweenEffect = this._scene.tweens.create({
 			targets: target,
-			props: {
-				alpha: { getStart: () => 1, getEnd: () => 0 }
-			},
+			props: tweenProps,
 			duration: 150,
-			onComplete: () => {
-				target.setVisible(false).setActive(false);
-			}
+			onComplete: onCompleteHandler
 		});
 		tweenEffect.play();
 	}
@@ -174,25 +193,38 @@ export class ToastPlugin extends Phaser.Plugins.BasePlugin {
 	}
 
 	show (message: string, position?: Phaser.Toast.Position, config?: Partial<Phaser.Toast.Config>): void {
-		let reuseTarget = this._containers.find((target) => !target.active);
-		if (reuseTarget) {
-			reuseTarget.setVisible(true).setActive(true);
+		let reuseContainer = this._containers.find((target) => !target.active);
+		if (reuseContainer) {
+			reuseContainer.setVisible(true).setActive(true);
+			reuseContainer.setData(DataProps.fadeInPropsEffect, config?.fadeInTweenEffect);
+			reuseContainer.setData(DataProps.fadeOutPropsEffect, config?.fadeOutTweenEffect);
+			reuseContainer.setData(DataProps.isManualClose, config?.manualClose);
+			reuseContainer.setData(DataProps.showDuration, config?.showDuration);
+			if (config?.manualClose) this.setInteractive(reuseContainer);
 
 			const labelIndex = 1;
-			const labelText = reuseTarget.getAt(labelIndex) as Phaser.GameObjects.Text;
-			labelText.setText(message).setStyle(config?.textStyle || {});
+			const labelText = reuseContainer.getAt(labelIndex) as Phaser.GameObjects.Text;
+			labelText.setText(message);
+			labelText.setStyle({ fontStyle: "" }); // Reset font style
+			labelText.setStyle(config?.textStyle || {});
 
-			this.setPosition(reuseTarget, position);
-			this.fadeIn(reuseTarget, config?.showDuration, config?.manualClose);
+			this.setPosition(reuseContainer, position);
+			this.fadeIn(reuseContainer);
 			return;
 		}
 
 		const toastSprite = this.createSprite();
 		const toastLabel = this.createLabelText(message, config?.textStyle);
 
-		const toastContainer = this.setupContainer(toastSprite, [toastSprite, toastLabel], config?.manualClose);
+		const toastContainer = this.setupContainer(toastSprite, [toastSprite, toastLabel]);
+		toastContainer.setData(DataProps.fadeInPropsEffect, config?.fadeInTweenEffect);
+		toastContainer.setData(DataProps.fadeOutPropsEffect, config?.fadeOutTweenEffect);
+		toastContainer.setData(DataProps.isManualClose, config?.manualClose);
+		toastContainer.setData(DataProps.showDuration, config?.showDuration);
+		if (config?.manualClose) this.setInteractive(toastContainer);
+
 		this.setPosition(toastContainer, position);
-		this.fadeIn(toastContainer, config?.showDuration, config?.manualClose);
+		this.fadeIn(toastContainer);
 
 		this._containers.push(toastContainer);
 	}
