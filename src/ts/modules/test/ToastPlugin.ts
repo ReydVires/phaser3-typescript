@@ -4,10 +4,11 @@ const BASE_COLOR = 0xfafafa;
 const BASE_WIDTH = 480;
 const BASE_HEIGHT = 72;
 const BASE_RADIUS = 20;
+const BASE_STROKE_COLOR = 0x34495e;
 const BASE_STYLE_FONT_SIZE = `${27}px`;
 const BASE_STYLE_FONT_COLOR = "#34495e";
 const BASE_STYLE_FONT_FAMILY = "arial";
-const BASE_STROKE_COLOR = 0x34495e;
+const BASE_STYLE_FONT_ALIGN = "center";
 const BASE_DEPTH = 100;
 
 type GameObjectTarget = Phaser.GameObjects.Container;
@@ -16,6 +17,7 @@ export class ToastPlugin extends Phaser.Plugins.BasePlugin {
 
 	private _scene: Phaser.Scene;
 	private _textureKey: string;
+	private _containers: GameObjectTarget[];
 
 	constructor (pluginManager: Phaser.Plugins.PluginManager) {
 		super(pluginManager);
@@ -57,7 +59,7 @@ export class ToastPlugin extends Phaser.Plugins.BasePlugin {
 
 	private createLabelText (message: string, style?: Phaser.Types.GameObjects.Text.TextStyle): Phaser.GameObjects.Text {
 		const text = this._scene.add.text(0, 0, message, <Phaser.Types.GameObjects.Text.TextStyle> {
-			align: "center",
+			align: BASE_STYLE_FONT_ALIGN,
 			color: BASE_STYLE_FONT_COLOR,
 			fontSize: BASE_STYLE_FONT_SIZE,
 			fontFamily: BASE_STYLE_FONT_FAMILY,
@@ -67,10 +69,10 @@ export class ToastPlugin extends Phaser.Plugins.BasePlugin {
 		return text;
 	}
 
-	private setupContainer (size: Phaser.GameObjects.Components.Size, children: Phaser.GameObjects.GameObject[], manualClose?: boolean): Phaser.GameObjects.Container {
+	private setupContainer (size: Phaser.GameObjects.Components.Size, children: Phaser.GameObjects.GameObject[], manualClose?: boolean): GameObjectTarget {
 		const container = this._scene.add.container(0, 0, children);
-		container.setSize(size.displayWidth, size.displayHeight);
-		container.setVisible(false).setDepth(BASE_DEPTH);
+		container.setSize(size.displayWidth, size.displayHeight).setDepth(BASE_DEPTH);
+		container.setVisible(false).setActive(false);
 
 		if (!manualClose) return container;
 		return container.setInteractive({useHandCursor: true}).on("pointerup", () => {
@@ -134,7 +136,7 @@ export class ToastPlugin extends Phaser.Plugins.BasePlugin {
 	private fadeIn (target: GameObjectTarget, showDuration?: number, isManualClose?: boolean): void {
 		const tweenEffect = this._scene.tweens.create({
 			onStart: () => {
-				target.setVisible(true);
+				target.setVisible(true).setActive(true);
 			},
 			targets: target,
 			props: {
@@ -151,30 +153,48 @@ export class ToastPlugin extends Phaser.Plugins.BasePlugin {
 	}
 
 	private fadeOut (target: GameObjectTarget): void {
-		this._scene.tweens.add({
+		const tweenEffect = this._scene.tweens.create({
 			targets: target,
 			props: {
 				alpha: { getStart: () => 1, getEnd: () => 0 }
 			},
 			duration: 150,
 			onComplete: () => {
-				target.setVisible(false);
+				target.setVisible(false).setActive(false);
 			}
 		});
+		tweenEffect.play();
 	}
 
 	configure (scene: Phaser.Scene, textureInfo?: Partial<Phaser.Toast.TextureInfo>): void {
 		this._scene = scene;
+		this._containers = [];
 		this.generateTextureKey();
 		this.generateTexture(textureInfo);
 	}
 
 	show (message: string, position?: Phaser.Toast.Position, config?: Partial<Phaser.Toast.Config>): void {
+		let reuseTarget = this._containers.find((target) => !target.active);
+		if (reuseTarget) {
+			reuseTarget.setVisible(true).setActive(true);
+
+			const labelIndex = 1;
+			const labelText = reuseTarget.getAt(labelIndex) as Phaser.GameObjects.Text;
+			labelText.setText(message).setStyle(config?.textStyle || {});
+
+			this.setPosition(reuseTarget, position);
+			this.fadeIn(reuseTarget, config?.showDuration, config?.manualClose);
+			return;
+		}
+
 		const toastSprite = this.createSprite();
 		const toastLabel = this.createLabelText(message, config?.textStyle);
+
 		const toastContainer = this.setupContainer(toastSprite, [toastSprite, toastLabel], config?.manualClose);
 		this.setPosition(toastContainer, position);
 		this.fadeIn(toastContainer, config?.showDuration, config?.manualClose);
+
+		this._containers.push(toastContainer);
 	}
 
 }
