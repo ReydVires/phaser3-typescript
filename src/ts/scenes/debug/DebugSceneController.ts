@@ -40,6 +40,10 @@ export class DebugSceneController extends Phaser.Scene {
 		this.view.showDebugPanel();
 	}
 
+	hide (): void {
+		this.view.hideDebugPanel();
+	}
+
 	updateDebugText (text: string): void {
 		this.view.updateDebugText(text);
 	}
