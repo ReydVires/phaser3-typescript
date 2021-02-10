@@ -44,7 +44,7 @@ export class GameplaySceneController extends Phaser.Scene {
 		});
 		this.onCreateFinish((uiView) => {
 			this.cameraController.registerGameobjectInCamera(uiView as Phaser.GameObjects.Container, CameraKeyList.UI);
-			this.debugController.show();
+			this.debugController.show(true);
 			window.document.addEventListener("resizeEnd", resizeEndListener); // Note: Dispatch to debug when resized
 
 			// Test Error

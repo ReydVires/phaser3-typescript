@@ -22,12 +22,15 @@ export class DebugController {
 		return this._debugSceneController.scene.isVisible();
 	}
 
-	show (toggle?: boolean): void {
+	show (minimize?: boolean): void {
 		if (!this.isActive() || this._debugSceneController.scene.isVisible()) return;
 		this._debugSceneController.scene.setVisible(true);
 		this._debugSceneController.scene.bringToTop();
 		this._debugSceneController.input.enabled = true;
-		if (!toggle) return;
+		if (minimize) {
+			this._debugSceneController.hide();
+			return;
+		}
 		this._debugSceneController.show();
 	}
 
