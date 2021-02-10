@@ -15,6 +15,7 @@ export class TitleSceneController extends Phaser.Scene {
 	}
 
 	init (): void {
+		this.toast.configure(this);
 		this.view = new TitleSceneView(this);
 		this.audioController = AudioController.getInstance();
 

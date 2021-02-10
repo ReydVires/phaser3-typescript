@@ -22,6 +22,7 @@ export class GameplaySceneController extends Phaser.Scene {
 	}
 
 	init (): void {
+		this.toast.configure(this);
 		this.view = new GameplaySceneView(this);
 		this.audioController = AudioController.getInstance();
 		this.cameraController = new CameraController(this);

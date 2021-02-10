@@ -30,8 +30,6 @@ export class GameplaySceneView implements BaseView {
 	}
 
 	create (): void {
-		this._scene.toast.configure(this._scene);
-
 		this._uiView = this._scene.add.container();
 		this._restartKey = this._scene.input.keyboard.addKey('R');
 		this.createTestImage();

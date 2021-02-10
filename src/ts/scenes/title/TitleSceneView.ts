@@ -26,8 +26,6 @@ export class TitleSceneView implements BaseView {
 	}
 
 	create (): void {
-		this._scene.toast.configure(this._scene);
-
 		this.createPlayButton();
 		this.createMuteButton();
 		this.createLoadingAnimation();
