@@ -1,22 +1,22 @@
-enum Position {
-	TOP_LEFT,
-	TOP_CENTER,
-	TOP_RIGHT,
-	MIDDLE_LEFT,
-	MIDDLE_CENTER,
-	MIDDLE_RIGHT,
-	BOTTOM_LEFT,
-	BOTTOM_CENTER,
-	BOTTOM_RIGHT,
-}
+const POSITION = {
+	TOP_LEFT: 0,
+	TOP_CENTER: 1,
+	TOP_RIGHT: 2,
+	MIDDLE_LEFT: 3,
+	MIDDLE_CENTER: 4,
+	MIDDLE_RIGHT: 5,
+	BOTTOM_LEFT: 6,
+	BOTTOM_CENTER: 7,
+	BOTTOM_RIGHT: 8,
+};
 
 function injectExtension (): void {
-	Object.defineProperty(Phaser, "Toast", {
+	const extensionKey = "Toast";
+	Object.defineProperty(Phaser, extensionKey, {
 		value: {
-			Position: Position
+			Position: POSITION
 		},
-		writable: true,
-		configurable: true
+		writable: false
 	});
 }
 
