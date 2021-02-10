@@ -20,11 +20,25 @@ export class TitleSceneController extends Phaser.Scene {
 
 		this.onClickPlay(() => this.scene.start(SceneInfo.GAMEPLAY.key));
 		this.onClickMute(() => {
-			this.view.showToast(`BGM is ${this.audioController.isMuted() ? "off" : "on"}`, Phaser.Toast.Position.TOP_CENTER, { manualClose: false });
+			this.view.showToast(`BGM is ${this.audioController.isMuted() ? "off" : "on"}`, Phaser.Toast.Position.TOP_CENTER, {
+				fadeInTweenEffect: {
+					y: { getStart: () => 0, getEnd: (target) => target.y }
+				},
+				fadeOutTweenEffect: {
+					y: { getStart: (target) => target.y, getEnd: () => 0 }
+				}
+			});
 
 			(this.audioController.isMuted()) ? this.audioController.mute() : this.audioController.unmute();
 		});
 		this.onCreateFinish(() => {
+			this.view.showToast("Create finish", Phaser.Toast.Position.TOP_RIGHT, {
+				manualClose: true,
+				textStyle: { fontStyle: "bold" },
+				fadeOutTweenEffect: {
+					y: { getStart: (target) => target.y, getEnd: () => 0 }
+				}
+			});
 			this.playBGMWhenReady();
 		});
 	}
