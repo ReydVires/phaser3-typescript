@@ -26,19 +26,19 @@ export class AudioController {
 			this._enableAudio = true;
 			this._isInitialize = true;
 
-			this._scene.sound.pauseOnBlur = false;
+			this._scene.sound.pauseOnBlur = true;
 			this.registerVisibilityChangeEvent();
 			resolve();
 		});
 	}
 
 	private registerVisibilityChangeEvent (): void {
-		document.addEventListener("visibilitychange", () => {
-			if (document.visibilityState === "visible") {
-				if (this._enableAudio) this.unmute();
-			}
-			if (!document.hidden) return;
+		const gameEvent = this._scene.game.events;
+		gameEvent.on("hidden", () => {
 			this.pauseBGM();
+		});
+		gameEvent.on("visible", () => {
+			if (this._enableAudio) this.unmute();
 		});
 	}
 
